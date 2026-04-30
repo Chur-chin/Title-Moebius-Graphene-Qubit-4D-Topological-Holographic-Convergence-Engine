@@ -1,0 +1,36 @@
+import numpy as np
+import matplotlib.pyplot as plt
+
+def plot_topological_focusing():
+    # 1. Coordinate Setup: Serpentine Path
+    x = np.linspace(0, 20, 500)
+    y_path = 0.8 * np.sin(0.7 * x)
+    
+    # 2. Wave Intensity Calculation with Moebius Phase Flip
+    # Representing the transition from individual particles to collective modes
+    k = 2 * np.pi / 0.2
+    phase = k * x
+    # UV Triggered Moebius Flip at x = 10
+    phase_flipped = np.where(x > 10, phase + np.pi, phase)
+    intensity = np.exp(-0.1 * x) * (np.cos(phase_flipped)**2)
+    
+    # 3. Plotting
+    fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(10, 8), gridspec_kw={'height_ratios': [1, 2]})
+    
+    # Path Geometry
+    ax1.plot(x, y_path, color='gray', linestyle='--', label='Serpentine Waveguide')
+    ax1.set_title("Topological Waveguide Geometry")
+    ax1.legend()
+    
+    # Intensity Distribution (Focusing Pattern)
+    im = ax2.scatter(x, np.zeros_like(x), c=intensity, cmap='magma', s=100, label='Holographic Intensity')
+    ax2.plot(x, intensity, color='cyan', linewidth=2, label='Collective Mode Signal')
+    ax2.set_title("4D -> 2D Holographic Focusing (UV-Triggered)")
+    ax2.set_xlabel("Waveguide Axis (um)")
+    ax2.set_ylabel("Amplitude / Intensity")
+    plt.colorbar(im, ax=ax2, label='Energy Density')
+    
+    plt.tight_layout()
+    plt.show()
+
+plot_topological_focusing()
