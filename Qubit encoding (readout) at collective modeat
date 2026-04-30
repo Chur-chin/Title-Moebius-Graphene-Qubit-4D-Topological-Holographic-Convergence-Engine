@@ -1,0 +1,21 @@
+def encode_to_qubit_state(complex_wave):
+    """
+    Möbius 간섭 패턴의 결과물을 Qubit 상태 |psi> = a|0> + b|1>로 변환
+    """
+    # 1. 특정 간섭 지점(Constructive vs Destructive)의 강도 추출
+    # 예: 파동의 실수부와 허수부 비중을 확률 진폭으로 사용
+    alpha = np.mean(np.real(complex_wave))
+    beta = np.mean(np.imag(complex_wave))
+    
+    # 2. 정규화 (Normalization: |alpha|^2 + |beta|^2 = 1)
+    norm = np.sqrt(np.abs(alpha)**2 + np.abs(beta)**2)
+    state_0 = alpha / norm
+    state_1 = beta / norm
+    
+    return np.array([state_0, state_1])
+
+# 예시 실행
+# wave_data = [시뮬레이션 결과 파동]
+# uv_effect = apply_uv_moebius_logic(wave_data, uv_intensity=0.8)
+# qubit_state = encode_to_qubit_state(uv_effect)
+# print(f"Encoded Qubit: {qubit_state[0]:.2f}|0> + {qubit_state[1]:.2f}|1>")
