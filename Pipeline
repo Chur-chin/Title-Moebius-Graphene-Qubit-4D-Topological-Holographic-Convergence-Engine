@@ -1,0 +1,22 @@
+class MoebiusQubitEngine:
+    def __init__(self, length=1000):
+        self.x = np.linspace(0, 20, length)
+        self.wave = np.exp(1j * 2 * np.pi * 0.5 * self.x) # 기초 파동
+
+    def run_calculation(self, uv_power):
+        # 1. UV 조사 및 Möbius 위상 적용
+        processed_wave = apply_uv_moebius_logic(self.wave, uv_power)
+        
+        # 2. Qubit 상태 인코딩
+        q_state = encode_to_qubit_state(processed_wave)
+        
+        # 3. 결과 해석 (XOR 논리 등과 매칭 가능)
+        # 예: |1>의 확률이 높으면 논리 '1' 출력
+        prob_1 = np.abs(q_state[1])**2
+        result_bit = 1 if prob_1 > 0.5 else 0
+        
+        return q_state, result_bit
+
+# 시뮬레이션 인스턴스 생성
+engine = MoebiusQubitEngine()
+state, bit = engine.run_calculation(uv_power=0.9)
